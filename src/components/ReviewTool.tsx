@@ -17,17 +17,29 @@ const TONES = [
 
 const INDUSTRIES = [
   'Restaurant / Food Service',
-  'Retail / E-commerce',
-  'Healthcare / Medical',
-  'Home Services (Plumbing, HVAC, etc.)',
-  'Legal Services',
-  'Real Estate',
-  'Automotive',
+  'Roofing / Exteriors',
+  'Plumbing',
+  'HVAC / Heating & Cooling',
+  'Electrical',
+  'General Contractor',
+  'Landscaping / Lawn Care',
+  'Cleaning / Janitorial',
+  'Pest Control',
+  'Automotive / Mechanic',
   'Salon / Spa / Beauty',
+  'Healthcare / Medical',
+  'Dental',
+  'Veterinary',
+  'Real Estate',
+  'Legal Services',
+  'Accounting / Financial',
+  'Retail / E-commerce',
   'Fitness / Wellness',
-  'Professional Services',
   'Hospitality / Hotels',
+  'Moving / Storage',
+  'Photography / Videography',
   'Education / Tutoring',
+  'IT / Tech Support',
   'Other',
 ];
 
@@ -187,7 +199,6 @@ export default function ReviewTool({ onFirstUse }: ReviewToolProps) {
   const [error, setError] = useState('');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [hasUsedTool, setHasUsedTool] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
 
   const usageToday = typeof window !== 'undefined' ? getUsageToday() : 0;
   const remainingFree = Math.max(0, FREE_LIMIT - usageToday);
@@ -314,50 +325,37 @@ export default function ReviewTool({ onFirstUse }: ReviewToolProps) {
         </div>
       </div>
 
-      {/* Optional Settings */}
-      <div>
-        <button
-          type="button"
-          onClick={() => setShowSettings(!showSettings)}
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-        >
-          <span className={`transition-transform ${showSettings ? 'rotate-90' : ''}`}>▶</span>
-          Personalize your response (optional)
-        </button>
-
-        {showSettings && (
-          <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="business-name" className="block text-xs font-medium text-muted-foreground mb-1">
-                Business name
-              </label>
-              <input
-                id="business-name"
-                type="text"
-                placeholder="e.g., Joe's Pizza"
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-            </div>
-            <div>
-              <label htmlFor="industry-select" className="block text-xs font-medium text-muted-foreground mb-1">
-                Industry
-              </label>
-              <select
-                id="industry-select"
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              >
-                <option value="">Select industry...</option>
-                {INDUSTRIES.map((ind) => (
-                  <option key={ind} value={ind}>{ind}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        )}
+      {/* Business Context */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label htmlFor="industry-select" className="block text-sm font-medium mb-2">
+            Business type
+          </label>
+          <select
+            id="industry-select"
+            value={industry}
+            onChange={(e) => setIndustry(e.target.value)}
+            className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            <option value="">Select your business type...</option>
+            {INDUSTRIES.map((ind) => (
+              <option key={ind} value={ind}>{ind}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="business-name" className="block text-sm font-medium mb-2">
+            Business name <span className="text-muted-foreground font-normal">(optional)</span>
+          </label>
+          <input
+            id="business-name"
+            type="text"
+            placeholder="e.g., Wilson Roofing"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
       </div>
 
       {/* Generate Button */}
